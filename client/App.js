@@ -1,22 +1,30 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { AppRegistry } from 'react-native';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
-  }
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import reducer from './app/reducers'
+
+
+import AppNavigator from './app/navigators/AppNavigator'
+
+
+function configureStore(initialState) {
+	const enhancer = compose(
+		applyMiddleware(
+			thunkMiddleware
+		)
+	);
+	return createStore(reducer, initialState, enhancer)
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const store = configureStore({});
+
+const App = () => (
+	<Provider store={ store }>
+		<AppNavigator />
+	</Provider>
+)
+
+AppRegistry.registerComponent('Shooot', () => App);
