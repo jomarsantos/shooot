@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
-
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import reducer from './app/reducers'
+import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
+import reducer from './src/reducers'
 
-
-import AppNavigator from './app/navigators/AppNavigator'
-
+import AppNavigator from './src/navigators/AppNavigator'
 
 function configureStore(initialState) {
+	const navigationMiddleware = createReactNavigationReduxMiddleware(
+	  "app",
+	  state => state.navigation,
+	)
+
 	const enhancer = compose(
 		applyMiddleware(
-			thunkMiddleware
+			thunkMiddleware,
+			navigationMiddleware
 		)
 	);
 	return createStore(reducer, initialState, enhancer)
@@ -27,4 +31,4 @@ const App = () => (
 	</Provider>
 )
 
-AppRegistry.registerComponent('Shooot', () => App);
+export default App;
