@@ -19,7 +19,18 @@ class JoinShoootScreen extends Component {
 	render() {
 		return (
 			<View>
-				<Text>JoinShooot</Text>
+				<View>
+					<Text>Searching for nearby hosts...</Text>
+					<View>
+						<View>
+							<Text>jomars</Text>
+						</View>
+					</View>
+				</View>
+				<View>
+					<Text>Or enter shooot code:</Text>
+					<Text>_______</Text>
+				</View>
 			</View>
 		)
 	}
