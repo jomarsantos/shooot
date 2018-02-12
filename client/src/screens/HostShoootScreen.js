@@ -19,7 +19,21 @@ class HostShoootScreen extends Component {
 	render() {
 		return (
 			<View>
-				<Text>HostShooot</Text>
+				<View>
+					<Text>Waiting for participants...</Text>
+					<View>
+						<View>
+							<Text>cecilia.federizon</Text>
+						</View>
+						<View>
+							<Text>rherbosa</Text>
+						</View>
+					</View>
+				</View>
+				<View>
+					<Text>Shareable shooot code:</Text>
+					<Text>Y6R8</Text>
+				</View>
 			</View>
 		)
 	}
