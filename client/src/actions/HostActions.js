@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 export const SHOOOT_CREATED_HOST_ACTION = 'SHOOOT_CREATED_HOST_ACTION';
+export const NEW_POSSIBLE_PARTICIPANT_HOST_ACTION = 'NEW_POSSIBLE_PARTICIPANT_HOST_ACTION';
 
 export function createShooot(socket) {
 	let createShoootPromise = (reqSocket, reqArgs) => new Promise(resolve => {
@@ -12,16 +13,18 @@ export function createShooot(socket) {
 	return (dispatch, getState) => {
 		return createShoootPromise(socket, {}).then((response) => {
 			console.log("RESPONSE FROM SERVER", response);
-			var derp = socket;
-			// console.log(socket);
-			// socket.on('test', () => {
-			// 	dispatch({
-			// 		type: TEST,
-			// 	});
-			// });
-
 
 			// TODO: validate response
+
+			socket.on(response.code, (message) => {
+				switch(message.type) {
+					case 'addNewPossibleParticipant':
+						dispatch({
+							type: NEW_POSSIBLE_PARTICIPANT_HOST_ACTION,
+							participant: message.participant
+						});
+				}
+			});
 
 			dispatch(shoootCreated(response));
 		});

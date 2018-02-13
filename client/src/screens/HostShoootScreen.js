@@ -13,17 +13,16 @@ class HostShoootScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.props.initializeSocket();
-		console.log('constructor');
 	}
 
 	componentWillReceiveProps(nextProps) {
+		// Once socket is initialized, create a session
 		if (nextProps.socketStatus === 1 && nextProps.sessionCreated === 0) {
 			this.props.createShooot(nextProps.socket);
 		}
 	}
 
 	render() {
-		console.log('render');
 		return (
 			<View>
 				<View>

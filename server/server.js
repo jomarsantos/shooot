@@ -50,6 +50,22 @@ io.on('connection', function(socket){
 		callback(response);
 	});
 
+	socket.on('joinShooot', function(message, callback) {
+		console.log('[PARTICIPANT] request to join a shooot');
+
+		// TODO: check if shooot code exists
+
+		var details = {
+			type: 'addNewPossibleParticipant',
+			participant: {
+				id: 12345,
+				username: 'cecilia.federizon'
+			}
+		}
+
+		socket.broadcast.emit(message.channel, details);
+	});
+
 	socket.on('disconnect', function(){
 		console.log('user disconnected');
 	});
