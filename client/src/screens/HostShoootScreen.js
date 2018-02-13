@@ -23,18 +23,21 @@ class HostShoootScreen extends Component {
 	}
 
 	render() {
+		let participants = this.props.participants.map((participant, index) => {
+			return (
+				<View key={participant.id}>
+					<Text>{participant.username}</Text>
+				</View>
+			);
+		});
+
 		return (
 			<View>
 				<View>
 					<Text>{this.props.test}</Text>
 					<Text>Waiting for participants...</Text>
 					<View>
-						<View>
-							<Text>cecilia.federizon</Text>
-						</View>
-						<View>
-							<Text>rherbosa</Text>
-						</View>
+						{participants}
 					</View>
 				</View>
 				<View>
@@ -56,7 +59,8 @@ function mapStateToProps(state) {
 		socketStatus: state.general.socketStatus,
 		socket: state.general.socket,
 		session: state.general.session,
-		sessionCreated: state.host.sessionCreated
+		sessionCreated: state.host.sessionCreated,
+		participants: state.host.participants
 	};
 }
 

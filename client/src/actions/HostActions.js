@@ -16,7 +16,7 @@ export function createShooot(socket) {
 
 			// TODO: validate response
 
-			socket.on(response.code, (message) => {
+			socket.on(response.session.code, (message) => {
 				switch(message.type) {
 					case 'addNewPossibleParticipant':
 						dispatch({

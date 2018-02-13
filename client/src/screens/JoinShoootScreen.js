@@ -6,14 +6,20 @@ const {
 } = ReactNative
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
+import { initializeSocket } from '../actions/GeneralActions'
+import { joinShooot } from '../actions/ParticipantActions'
 
 class JoinShoootScreen extends Component {
-	joinPressed() {
-		console.log('joining');
+	constructor(props) {
+		super(props);
+		this.props.initializeSocket();
 	}
 
-	hostPressed() {
-		console.log('hosting');
+	componentWillReceiveProps(nextProps) {
+		// Once socket is initialized, create a session
+		if (nextProps.socketStatus === 1 && nextProps.sessionJoined === 0) {
+			this.props.joinShooot(nextProps.socket);
+		}
 	}
 
 	render() {
@@ -42,13 +48,26 @@ JoinShoootScreen.navigationOptions = {
 };
 
 function mapStateToProps(state) {
-	return {};
+	return {
+		socketStatus: state.general.socketStatus,
+		socket: state.general.socket,
+		session: state.general.session,
+		sessionJoined: state.participant.sessionJoined
+	};
 }
 
 function mapDispatchToProps(dispatch) {
-	navigate: (routeName) => {
-		dispatch(navigate(routeName));
+	return {
+		navigate: (routeName) => {
+			dispatch(navigate(routeName));
+		},
+		initializeSocket: () => {
+			dispatch(initializeSocket());
+		},
+		joinShooot: (socket) => {
+			dispatch(joinShooot(socket));
+		}
 	}
 }
 
-export default connect(null, null)(JoinShoootScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(JoinShoootScreen);

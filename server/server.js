@@ -57,13 +57,17 @@ io.on('connection', function(socket){
 
 		var details = {
 			type: 'addNewPossibleParticipant',
-			participant: {
-				id: 12345,
-				username: 'cecilia.federizon'
-			}
+			participant: message.participant
 		}
 
-		socket.broadcast.emit(message.channel, details);
+		socket.broadcast.emit(message.code, details);
+
+		var response = {
+			session: {
+				success: true,
+			}
+		}
+		callback(response);
 	});
 
 	socket.on('disconnect', function(){

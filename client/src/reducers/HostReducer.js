@@ -17,7 +17,7 @@ export default function(state = INITIAL_STATE, action) {
 
 			return {
 				...state,
-				sessionCreated: [...state.participants, action.participant],
+				participants: [...state.participants, action.participant],
 			};
 	  default:
 	    return state;
