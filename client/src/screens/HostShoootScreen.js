@@ -6,14 +6,12 @@ const {
 } = ReactNative
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
+import { initializeSocket } from '../actions/GeneralActions'
 
 class HostShoootScreen extends Component {
-	joinPressed() {
-		console.log('joining');
-	}
-
-	hostPressed() {
-		console.log('hosting');
+	constructor(props) {
+		super(props);
+		this.props.initializeSocket();
 	}
 
 	render() {
@@ -49,9 +47,14 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-	navigate: (routeName) => {
-		dispatch(navigate(routeName));
+	return {
+		navigate: (routeName) => {
+			dispatch(navigate(routeName));
+		},
+		initializeSocket: () => {
+			dispatch(initializeSocket());
+		}
 	}
 }
 
-export default connect(null, null)(HostShoootScreen);
+export default connect(null, mapDispatchToProps)(HostShoootScreen);
