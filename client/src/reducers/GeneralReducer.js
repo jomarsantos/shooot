@@ -1,8 +1,10 @@
-import { INITIALIZE_SOCKET_GENERAL_ACTION } from '../actions/currentBrews';
+import { INITIALIZE_SOCKET_GENERAL_ACTION } from '../actions/GeneralActions';
+import { SHOOOT_CREATED_HOST_ACTION } from '../actions/HostActions';
 
 const INITIAL_STATE = {
 	socketStatus: 0,
-	socket: {}
+	socket: {},
+	session: {}
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -13,6 +15,11 @@ export default function(state = INITIAL_STATE, action) {
 				...state,
 				socketStatus: 1,
 				socket: action.socket
+			};
+		case SHOOOT_CREATED_HOST_ACTION:
+			return {
+				...state,
+				session: action.session
 			};
 	  default:
 	    return state;

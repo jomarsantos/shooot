@@ -1,5 +1,8 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19002,
-  "packagerPid": 63934
+  "packagerPid": 64962,
+  "expoServerNgrokUrl": "https://kb-pjq.jomarsantos.client.exp.direct",
+  "packagerNgrokUrl": "https://packager.kb-pjq.jomarsantos.client.exp.direct",
+  "ngrokPid": 64594
 }

@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 app.use(express.static(path.resolve(__dirname, './public')));
 
 //////////////////////////
-// API and Routes
+// API
 //////////////////////////
 var hostRouter = require('./routes/host.js');
 var participantRouter = require('./routes/participant.js');
@@ -33,8 +33,23 @@ var io = require('socket.io')(http, {
   pingTimeout: 30000,
   pingInterval: 30000
 });
+
+var sessions = [];
+
 io.on('connection', function(socket){
   console.log('a user connected');
+
+	socket.on('createShooot', function(message, callback) {
+		console.log('[HOST] request to create a shooot');
+		var response = {
+			session: {
+				success: true,
+				code: 'Y6R9'
+			}
+		}
+		callback(response);
+	});
+
 	socket.on('disconnect', function(){
 		console.log('user disconnected');
 	});

@@ -7,17 +7,27 @@ const {
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
 import { initializeSocket } from '../actions/GeneralActions'
+import { createShooot } from '../actions/HostActions'
 
 class HostShoootScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.props.initializeSocket();
+		console.log('constructor');
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.socketStatus === 1 && nextProps.sessionCreated === 0) {
+			this.props.createShooot(nextProps.socket);
+		}
 	}
 
 	render() {
+		console.log('render');
 		return (
 			<View>
 				<View>
+					<Text>{this.props.test}</Text>
 					<Text>Waiting for participants...</Text>
 					<View>
 						<View>
@@ -30,7 +40,7 @@ class HostShoootScreen extends Component {
 				</View>
 				<View>
 					<Text>Shareable shooot code:</Text>
-					<Text>Y6R8</Text>
+					<Text>{this.props.session.code}</Text>
 				</View>
 			</View>
 		)
@@ -43,7 +53,12 @@ HostShoootScreen.navigationOptions = {
 };
 
 function mapStateToProps(state) {
-	return {};
+	return {
+		socketStatus: state.general.socketStatus,
+		socket: state.general.socket,
+		session: state.general.session,
+		sessionCreated: state.host.sessionCreated
+	};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -53,8 +68,11 @@ function mapDispatchToProps(dispatch) {
 		},
 		initializeSocket: () => {
 			dispatch(initializeSocket());
+		},
+		createShooot: (socket) => {
+			dispatch(createShooot(socket));
 		}
 	}
 }
 
-export default connect(null, mapDispatchToProps)(HostShoootScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(HostShoootScreen);
