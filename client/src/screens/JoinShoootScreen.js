@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import ReactNative from 'react-native'
 const {
 	View,
-	Text
+	Text,
+	TextInput
 } = ReactNative
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
 import { initializeSocket } from '../actions/GeneralActions'
-import { joinShooot } from '../actions/ParticipantActions'
+import { joinShooot, updateSessionCodeInput } from '../actions/ParticipantActions'
 
 class JoinShoootScreen extends Component {
 	constructor(props) {
@@ -15,27 +16,33 @@ class JoinShoootScreen extends Component {
 		this.props.initializeSocket();
 	}
 
+
 	componentWillReceiveProps(nextProps) {
-		// Once socket is initialized, create a session
-		if (nextProps.socketStatus === 1 && nextProps.sessionJoined === 0) {
-			this.props.joinShooot(nextProps.socket);
+		// TODO: Loading screen until socket is initialized
+	}
+
+	joinShoot() {
+		// TODO: remove stub / replace with user info
+		let participant = {
+			id: 12345,
+			username: 'cecilia.federizon'
 		}
+
+		this.props.joinShooot(this.props.socket, participant, this.props.sessionCodeInput);
+
+		// TODO: show "requesting to join" loading screen and handle if user is denied
 	}
 
 	render() {
 		return (
 			<View>
 				<View>
-					<Text>Searching for nearby hosts...</Text>
-					<View>
-						<View>
-							<Text>jomars</Text>
-						</View>
-					</View>
-				</View>
-				<View>
-					<Text>Or enter shooot code:</Text>
-					<Text>_______</Text>
+					<Text>Enter shooot code:</Text>
+					<TextInput
+						onSubmitEditing={() => this.joinShoot()}
+		        onChangeText={(text) => this.props.updateSessionCodeInput(text)}
+		        value={this.props.sessionCodeInput}
+		      />
 				</View>
 			</View>
 		)
@@ -52,6 +59,7 @@ function mapStateToProps(state) {
 		socketStatus: state.general.socketStatus,
 		socket: state.general.socket,
 		session: state.general.session,
+		sessionCodeInput: state.participant.sessionCodeInput,
 		sessionJoined: state.participant.sessionJoined
 	};
 }
@@ -64,8 +72,11 @@ function mapDispatchToProps(dispatch) {
 		initializeSocket: () => {
 			dispatch(initializeSocket());
 		},
-		joinShooot: (socket) => {
-			dispatch(joinShooot(socket));
+		updateSessionCodeInput: (text) => {
+			dispatch(updateSessionCodeInput(text));
+		},
+		joinShooot: (socket, participant, sessionCodeInput) => {
+			dispatch(joinShooot(socket, participant, sessionCodeInput));
 		}
 	}
 }

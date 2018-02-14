@@ -41,9 +41,12 @@ io.on('connection', function(socket){
 
 	socket.on('createShooot', function(message, callback) {
 		console.log('[HOST] request to create a shooot');
+
+		// TODO: create a new session in DB and return the details to host
+
 		var response = {
+			success: true,
 			session: {
-				success: true,
 				code: 'Y6R9'
 			}
 		}
@@ -53,19 +56,21 @@ io.on('connection', function(socket){
 	socket.on('joinShooot', function(message, callback) {
 		console.log('[PARTICIPANT] request to join a shooot');
 
-		// TODO: check if shooot code exists
+		// TODO: check if shooot code exists in DB and is active
+		let shootExists = true;
 
-		var details = {
-			type: 'addNewPossibleParticipant',
-			participant: message.participant
-		}
-
-		socket.broadcast.emit(message.code, details);
-
-		var response = {
-			session: {
-				success: true,
+		if (!shootExists) {
+			var response = {
+				success: false,
 			}
+		} else {
+			// TODO: update session in DB with new participant
+
+			var details = {
+				type: 'addNewPossibleParticipant',
+				participant: message.participant
+			}
+			socket.broadcast.emit(message.code, details);
 		}
 		callback(response);
 	});

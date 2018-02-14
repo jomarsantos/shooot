@@ -1,12 +1,18 @@
-// import { SHOOOT_CREATED_HOST_ACTION, NEW_POSSIBLE_PARTICIPANT_HOST_ACTION } from '../actions/HostActions';
+import { UPDATE_SESSION_CODE_INPUT_PARTICIPANT_ACTION } from '../actions/ParticipantActions';
 
 const INITIAL_STATE = {
 	sessionJoined: 0,
+	sessionCodeInput: ''
 };
 
 export default function(state = INITIAL_STATE, action) {
   let error;
   switch(action.type) {
+		case UPDATE_SESSION_CODE_INPUT_PARTICIPANT_ACTION:
+			return {
+				...state,
+				sessionCodeInput: action.sessionCodeInput,
+			};
 	  default:
 	    return state;
   }
