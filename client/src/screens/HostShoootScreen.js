@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import ReactNative from 'react-native'
 const {
 	View,
-	Text
+	Text,
+	TouchableHighlight
 } = ReactNative
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
@@ -44,6 +45,11 @@ class HostShoootScreen extends Component {
 					<Text>Shareable shooot code:</Text>
 					<Text>{this.props.session.code}</Text>
 				</View>
+				<TouchableHighlight
+					onPress={() => {this.props.navigate('RearrangeParticipants')}}
+				>
+					<Text>Next</Text>
+				</TouchableHighlight>
 			</View>
 		)
 	}

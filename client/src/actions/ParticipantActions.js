@@ -10,7 +10,6 @@ export function joinShooot(socket, participant, sessionCodeInput) {
 	});
 
 	return (dispatch, getState) => {
-		// NOTE: temporary stub here for testing
 		let args = {
 			code: sessionCodeInput,
 			participant: participant

@@ -8,6 +8,8 @@ import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 import HomeScreen from '../screens/HomeScreen';
 import JoinShoootScreen from '../screens/JoinShoootScreen';
 import HostShoootScreen from '../screens/HostShoootScreen';
+import RearrangeParticipantsScreen from '../screens/RearrangeParticipantsScreen';
+import ShoootScreen from '../screens/ShoootScreen';
 
 export const AppNavigator = StackNavigator({
 	  Home: {
@@ -18,6 +20,12 @@ export const AppNavigator = StackNavigator({
 		},
 		HostShooot: {
 			screen: HostShoootScreen
+		},
+		RearrangeParticipants: {
+			screen: RearrangeParticipantsScreen
+		},
+		Shooot: {
+			screen: ShoootScreen
 		}
 	}
 );

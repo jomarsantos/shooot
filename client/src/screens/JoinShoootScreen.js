@@ -18,7 +18,7 @@ class JoinShoootScreen extends Component {
 
 
 	componentWillReceiveProps(nextProps) {
-		// TODO: Loading screen until socket is initialized
+		// TODO: loading screen until socket is initialized
 	}
 
 	joinShoot() {
