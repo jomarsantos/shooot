@@ -20,10 +20,24 @@ app.use(express.static(path.resolve(__dirname, './public')));
 //////////////////////////
 // API
 //////////////////////////
+var loginRouter = require('./routes/login.js');
+app.use('/api/login', loginRouter);
+
 var hostRouter = require('./routes/host.js');
-var participantRouter = require('./routes/participant.js');
 app.use('/api/host', hostRouter);
+
+var participantRouter = require('./routes/participant.js');
 app.use('/api/participant', participantRouter);
+
+//////////////////////////
+// Database
+//////////////////////////
+var mongoose = require('mongoose');
+var mongoDB = config.mongoURL;
+mongoose.connect(mongoDB, {});
+mongoose.Promise = global.Promise;
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 //////////////////////////
 // Sockets
