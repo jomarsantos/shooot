@@ -41,7 +41,23 @@ export function googleLogin() {
 			scopes: ['profile', 'email'],
 		}).then(
 			response => {
-				console.log(response)
+				if (response.type === 'cancel') {
+					return;
+				}
+				fetch(config.baseUrl + '/api/login/google', {
+	        method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+	          accessToken: response.token
+	        })
+	      }).then(
+        	response => response.json(),
+	        error => console.log('An error occured.', error)
+	      ).then(json => {
+	        dispatch(loggedIn(json.user))
+				})
 			},
 			error => {
 				console.log('An error occured.', error);
