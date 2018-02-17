@@ -3,6 +3,7 @@ var router = express.Router();
 var FB = require('fb');
 var https = require('https');
 const User = require('../models/User');
+var config = require('../config');
 
 router.post('/fb', function (req, res) {
 	FB.api('/me', { fields: 'id,name,email', access_token: req.body.accessToken }, function (response) {
@@ -75,7 +76,7 @@ router.post('/fb', function (req, res) {
 })
 
 router.post('/google', function (req, res) {
-	https.get('https://www.googleapis.com/plus/v1/people/me?access_token=' + req.body.accessToken, function (response) {
+	https.get('https://www.googleapis.com/plus/v1/people/me?access_token=' + req.body.accessToken + '&key=' + config.auth.google.apiKey,function (response) {
 		response.setEncoding("utf8");
 		let body = "";
 		response.on("data", data => {

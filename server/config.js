@@ -20,4 +20,10 @@ config.test.port = '3000';
 // use dev for now
 config = config.dev;
 
+config.auth = {
+	google: {
+		apiKey: 'AIzaSyCNGqC3fAzC8BOgDElfdRLWE48H6UAaunU'
+	}
+};
+
 module.exports = config;

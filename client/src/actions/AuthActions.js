@@ -24,6 +24,10 @@ export function fbLogin() {
         	response => response.json(),
 	        error => console.log('An error occured.', error)
 	      ).then(json => {
+					if (!json.success) {
+						// TODO: show alert that login was not successful
+						return;
+					}
 	        dispatch(loggedIn(json.user))
 				})
 			},
@@ -51,13 +55,16 @@ export function googleLogin() {
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify({
-	          accessToken: response.token
+	          accessToken: response.accessToken
 	        })
 	      }).then(
         	response => response.json(),
 	        error => console.log('An error occured.', error)
 	      ).then(json => {
-					console.log(json);
+					if (!json.success) {
+						// TODO: show alert that login was not successful
+						return;
+					}
 	        dispatch(loggedIn(json.user))
 				})
 			},
