@@ -7,11 +7,16 @@ const {
 	TouchableHighlight
 } = ReactNative
 import { connect } from 'react-redux'
+import { initializeApp } from '../actions/GeneralActions'
 import { fbLogin, googleLogin } from '../actions/LoginActions'
 
-class HomeScreen extends Component {
+class LoginScreen extends Component {
+	componentDidMount() {
+		this.props.initializeApp();
+	}
+
 	render() {
-		return (
+		let main = (
 			<View>
 				<View>
 					<Image
@@ -33,21 +38,37 @@ class HomeScreen extends Component {
 						</TouchableHighlight>
 				</View>
 			</View>
+		);
+
+		if (!this.props.appInitialized) {
+			main = (
+				<View>
+					<Text>Loading</Text>
+				</View>
+			);
+		}
+		return (
+			main
 		)
 	}
 }
 
-HomeScreen.navigationOptions = {
+LoginScreen.navigationOptions = {
   title: 'Login',
 	header: null,
 };
 
 function mapStateToProps(state) {
-	return {};
+	return {
+		appInitialized: state.general.appInitialized
+	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
+		initializeApp: () => {
+			dispatch(initializeApp());
+		},
 		fbLogin: () => {
 			dispatch(fbLogin());
 		},
@@ -57,4 +78,4 @@ function mapDispatchToProps(dispatch) {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

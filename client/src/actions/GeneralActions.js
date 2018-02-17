@@ -1,5 +1,27 @@
 import io from 'socket.io-client';
+import { AsyncStorage } from 'react-native'
+export const INITIALIZE_APP_LOGGED_IN_GENERAL_ACTION = 'INITIALIZE_APP_LOGGED_IN_GENERAL_ACTION';
+export const INITIALIZE_APP_NOT_LOGGED_IN_GENERAL_ACTION = 'INITIALIZE_APP_NOT_LOGGED_IN_GENERAL_ACTION';
 export const INITIALIZE_SOCKET_GENERAL_ACTION = 'INITIALIZE_SOCKET_GENERAL_ACTION';
+
+export function initializeApp() {
+  return function (dispatch) {
+    return AsyncStorage.getItem('user').then(
+			function (user) {
+				if (user !== {}) {
+					dispatch({
+						type: INITIALIZE_APP_LOGGED_IN_GENERAL_ACTION,
+						user: user
+					});
+				} else {
+					dispatch({
+						type: INITIALIZE_APP_NOT_LOGGED_IN_GENERAL_ACTION,
+					});
+				}
+			}
+		)
+	}
+}
 
 export function initializeSocket() {
 	return (dispatch, getState) => {

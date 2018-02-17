@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, AsyncStorage } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
@@ -20,7 +20,14 @@ function configureStore(initialState) {
 			navigationMiddleware
 		)
 	);
-	return createStore(reducer, initialState, enhancer)
+
+  const store = createStore(reducer, initialState, enhancer);
+
+	store.subscribe(() => {
+		AsyncStorage.setItem('user', JSON.stringify(store.getState().user));
+	});
+
+	return store;
 }
 
 const store = configureStore({});

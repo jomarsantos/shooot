@@ -66,9 +66,9 @@ export function googleLogin() {
 	}
 }
 
-export function loggedIn(userDetails) {
+export function loggedIn(user) {
   return {
     type: SUCCESS_LOGIN_ACTION,
-		userDetails: userDetails
+		user: user
   };
 }
