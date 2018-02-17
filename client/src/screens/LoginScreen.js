@@ -8,15 +8,11 @@ const {
 } = ReactNative
 import { connect } from 'react-redux'
 import { initializeApp } from '../actions/GeneralActions'
-import { fbLogin, googleLogin } from '../actions/LoginActions'
+import { fbLogin, googleLogin } from '../actions/AuthActions'
 
 class LoginScreen extends Component {
-	componentDidMount() {
-		this.props.initializeApp();
-	}
-
 	render() {
-		let main = (
+		return (
 			<View>
 				<View>
 					<Image
@@ -38,17 +34,6 @@ class LoginScreen extends Component {
 						</TouchableHighlight>
 				</View>
 			</View>
-		);
-
-		if (!this.props.appInitialized) {
-			main = (
-				<View>
-					<Text>Loading</Text>
-				</View>
-			);
-		}
-		return (
-			main
 		)
 	}
 }

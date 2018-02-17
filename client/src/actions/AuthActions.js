@@ -1,5 +1,6 @@
 import config from '../../config'
-export const SUCCESS_LOGIN_ACTION = 'SUCCESS_LOGIN_ACTION';
+export const SUCCESS_AUTH_ACTION = 'SUCCESS_AUTH_ACTION';
+export const LOGOUT_AUTH_ACTION = 'LOGOUT_AUTH_ACTION';
 
 export function fbLogin() {
   return function (dispatch) {
@@ -56,6 +57,7 @@ export function googleLogin() {
         	response => response.json(),
 	        error => console.log('An error occured.', error)
 	      ).then(json => {
+					console.log(json);
 	        dispatch(loggedIn(json.user))
 				})
 			},
@@ -68,7 +70,13 @@ export function googleLogin() {
 
 export function loggedIn(user) {
   return {
-    type: SUCCESS_LOGIN_ACTION,
+    type: SUCCESS_AUTH_ACTION,
 		user: user
+  };
+}
+
+export function logout() {
+  return {
+    type: LOGOUT_AUTH_ACTION,
   };
 }

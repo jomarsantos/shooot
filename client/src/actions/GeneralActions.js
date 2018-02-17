@@ -7,11 +7,12 @@ export const INITIALIZE_SOCKET_GENERAL_ACTION = 'INITIALIZE_SOCKET_GENERAL_ACTIO
 export function initializeApp() {
   return function (dispatch) {
     return AsyncStorage.getItem('user').then(
-			function (user) {
-				if (user !== {}) {
+			function (userDataAsyncStorage) {
+				userDataAsyncStorage = JSON.parse(userDataAsyncStorage);
+				if (userDataAsyncStorage != null && userDataAsyncStorage.loggedIn) {
 					dispatch({
 						type: INITIALIZE_APP_LOGGED_IN_GENERAL_ACTION,
-						user: user
+						userDataAsyncStorage: userDataAsyncStorage
 					});
 				} else {
 					dispatch({

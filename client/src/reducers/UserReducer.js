@@ -1,5 +1,5 @@
 import { INITIALIZE_APP_LOGGED_IN_GENERAL_ACTION } from '../actions/GeneralActions';
-import { SUCCESS_LOGIN_ACTION } from '../actions/LoginActions';
+import { SUCCESS_AUTH_ACTION, LOGOUT_AUTH_ACTION } from '../actions/AuthActions';
 
 const INITIAL_STATE = {
 	user: {},
@@ -12,14 +12,20 @@ export default function(state = INITIAL_STATE, action) {
 		case INITIALIZE_APP_LOGGED_IN_GENERAL_ACTION:
 			return {
 				...state,
-				user: action.user,
+				user: action.userDataAsyncStorage.user,
 				loggedIn: true
 			};
-		case SUCCESS_LOGIN_ACTION:
+		case SUCCESS_AUTH_ACTION:
 			return {
 				...state,
 				user: action.user,
 				loggedIn: true
+			};
+		case LOGOUT_AUTH_ACTION:
+			return {
+				...state,
+				user: {},
+				loggedIn: false
 			};
 	  default:
 	    return state;

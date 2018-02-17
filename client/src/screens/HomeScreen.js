@@ -8,6 +8,7 @@ const {
 } = ReactNative
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
+import { logout } from '../actions/AuthActions'
 
 class HomeScreen extends Component {
 	render() {
@@ -30,6 +31,11 @@ class HomeScreen extends Component {
 						>
 							<Text>HOST</Text>
 						</TouchableHighlight>
+						<TouchableHighlight
+							onPress={() => {this.props.logout()}}
+						>
+							<Text>LOGOUT</Text>
+						</TouchableHighlight>
 				</View>
 			</View>
 		)
@@ -42,15 +48,20 @@ HomeScreen.navigationOptions = {
 };
 
 function mapStateToProps(state) {
-	return {};
+	return {
+		user: state.user
+	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		navigate: (routeName) => {
 			dispatch(navigate(routeName));
+		},
+		logout: () => {
+			dispatch(logout());
 		}
 	}
 }
 
-export default connect(null, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

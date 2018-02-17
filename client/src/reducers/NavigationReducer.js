@@ -1,10 +1,10 @@
 import { AppNavigator } from '../navigators/AppNavigator';
 import { NavigationActions } from 'react-navigation';
 import { NAVIGATE_NAVIGATION_ACTION } from '../actions/NavigationActions';
-import { SUCCESS_LOGIN_ACTION } from '../actions/LoginActions';
-import { INITIALIZE_APP_LOGGED_IN_GENERAL_ACTION } from '../actions/GeneralActions';
+import { SUCCESS_AUTH_ACTION, LOGOUT_AUTH_ACTION } from '../actions/AuthActions';
+import { INITIALIZE_APP_LOGGED_IN_GENERAL_ACTION, INITIALIZE_APP_NOT_LOGGED_IN_GENERAL_ACTION } from '../actions/GeneralActions';
 
-const firstAction = AppNavigator.router.getActionForPathAndParams('Login');
+const firstAction = AppNavigator.router.getActionForPathAndParams('AppInitialization');
 const initialNavigationState = AppNavigator.router.getStateForAction(firstAction);
 
 export default function(state = initialNavigationState, action) {
@@ -17,7 +17,7 @@ export default function(state = initialNavigationState, action) {
 				}),
 				state
 			);
-		case SUCCESS_LOGIN_ACTION:
+		case SUCCESS_AUTH_ACTION:
 			return AppNavigator.router.getStateForAction(
 				NavigationActions.navigate({
 					routeName: "Home"
@@ -28,6 +28,20 @@ export default function(state = initialNavigationState, action) {
 			return AppNavigator.router.getStateForAction(
 				NavigationActions.navigate({
 					routeName: "Home"
+				}),
+				state
+			);
+		case INITIALIZE_APP_NOT_LOGGED_IN_GENERAL_ACTION:
+			return AppNavigator.router.getStateForAction(
+				NavigationActions.navigate({
+					routeName: "Login"
+				}),
+				state
+			);
+		case LOGOUT_AUTH_ACTION:
+			return AppNavigator.router.getStateForAction(
+				NavigationActions.navigate({
+					routeName: "Login"
 				}),
 				state
 			);

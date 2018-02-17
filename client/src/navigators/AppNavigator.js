@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 
+import AppInitializationScreen from '../screens/AppInitializationScreen';
 import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import JoinShoootScreen from '../screens/JoinShoootScreen';
@@ -13,6 +14,9 @@ import RearrangeParticipantsScreen from '../screens/RearrangeParticipantsScreen'
 import ShoootScreen from '../screens/ShoootScreen';
 
 export const AppNavigator = StackNavigator({
+		AppInitialization: {
+			screen: AppInitializationScreen
+		},
 		Login: {
 			screen: LoginScreen
 		},
