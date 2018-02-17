@@ -13,8 +13,8 @@ router.post('/fb', function (req, res) {
 				msg: "Unable to log in. Please contact an admin. (Error 0)"
 			});
     }
-    else if (response.id === req.body.userId) {
-			User.find({fbUserId: req.body.userId}).exec(function (err, user) {
+    else {
+			User.find({fbUserId: response.id}).exec(function (err, user) {
 			  if (err) {
 					// Error 1: Problem querying database
 					res.send({
@@ -69,13 +69,7 @@ router.post('/fb', function (req, res) {
 					});
 				}
 			})
-    } else {
-			// Error 4: User tried logging in but IDs don't match (hacking?)
-			res.send({
-				success: false,
-				msg: "Unable to log in. Please contact an admin. (Error 4)"
-			});
-		}
+    }
 	});
 })
 

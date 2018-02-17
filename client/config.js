@@ -1,3 +1,6 @@
+var env = 'dev';
+// var env = 'prod';
+
 var config = {
 	auth: {
 		google: {
@@ -8,6 +11,12 @@ var config = {
 			appId: '2026817294249124'
 		}
 	}
+}
+
+if (env === 'dev') {
+	config.baseUrl = 'http://192.168.1.107:3000'
+} else {
+	config.baseUrl = 'http://shooot.founded';
 }
 
 module.exports = config;

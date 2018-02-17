@@ -1,12 +1,30 @@
 import config from '../../config'
+export const SUCCESS_LOGIN_ACTION = 'SUCCESS_LOGIN_ACTION';
 
 export function fbLogin() {
   return function (dispatch) {
     return Expo.Facebook.logInWithReadPermissionsAsync(
-			config.auth.facebook.appId
+			config.auth.facebook.appId,
+
 		).then(
 			response => {
-				console.log(response)
+				if (response.type === 'cancel') {
+					return;
+				}
+				fetch(config.baseUrl + '/api/login/fb', {
+	        method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+	          accessToken: response.token
+	        })
+	      }).then(
+        	response => response.json(),
+	        error => console.log('An error occured.', error)
+	      ).then(json => {
+	        dispatch(loggedIn(json.user))
+				})
 			},
 			error => {
 				console.log('An error occured.', error);
@@ -30,4 +48,11 @@ export function googleLogin() {
 			}
 		);
 	}
+}
+
+export function loggedIn(userDetails) {
+  return {
+    type: SUCCESS_LOGIN_ACTION,
+		userDetails: userDetails
+  };
 }
