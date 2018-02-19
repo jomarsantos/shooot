@@ -1,4 +1,5 @@
 var config = require('./config');
+var codes = require('./codes');
 const express = require('express');
 const app = express();
 const path = require('path')
@@ -42,6 +43,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 //////////////////////////
 // Sockets
 //////////////////////////
+var hostHelpers = require('./src/hostHelpers');
 var http = require('http').Server(app);
 var io = require('socket.io')(http, {
   pingTimeout: 30000,
@@ -55,16 +57,7 @@ io.on('connection', function(socket){
 
 	socket.on('createShooot', function(message, callback) {
 		console.log('[HOST] request to create a shooot');
-
-		// TODO: create a new session in DB and return the details to host
-
-		var response = {
-			success: true,
-			session: {
-				code: 'Y6R9'
-			}
-		}
-		callback(response);
+		hostHelpers.createSession(callback);
 	});
 
 	socket.on('joinShooot', function(message, callback) {
