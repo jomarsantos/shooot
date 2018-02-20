@@ -6,30 +6,54 @@ const {
 } = ReactNative
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
+import { acceptCameraPermissions } from '../actions/GeneralActions'
+import { Camera, Permissions } from 'expo';
 
-class HostShoootScreen extends Component {
+class ShoootScreen extends Component {
+	async componentDidMount() {
+		const { status } = await Expo.Permissions.askAsync(Permissions.CAMERA);
+		if (status == 'granted') {
+			this.props.acceptCameraPermissions();
+		};
+  }
+
 	render() {
+		let main = (
+			<View></View>
+		);
+
+		if (this.props.hasCameraPermission) {
+			main = (
+				<View style={{ flex: 1 }}>
+					<Camera style={{ flex: 1 }}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'transparent',
+                flexDirection: 'row',
+              }}>
+
+            </View>
+          </Camera>
+				</View>
+			);
+		}
 
 		return (
-			<View>
-				<Text>Shooot</Text>
-			</View>
+			main
 		)
 	}
 }
 
-HostShoootScreen.navigationOptions = {
+ShoootScreen.navigationOptions = {
   title: 'Shooot',
 	header: null,
 };
 
 function mapStateToProps(state) {
 	return {
-		socketStatus: state.general.socketStatus,
-		socket: state.general.socket,
-		session: state.general.session,
-		sessionCreated: state.host.sessionCreated,
-		participants: state.host.participants
+		user: state.user.user,
+		hasCameraPermission: state.user.hasCameraPermission,
 	};
 }
 
@@ -37,8 +61,11 @@ function mapDispatchToProps(dispatch) {
 	return {
 		navigate: (routeName) => {
 			dispatch(navigate(routeName));
+		},
+		acceptCameraPermissions: () => {
+			dispatch(acceptCameraPermissions());
 		}
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HostShoootScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ShoootScreen);

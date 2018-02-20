@@ -7,7 +7,6 @@ const {
 	TouchableHighlight
 } = ReactNative
 import { connect } from 'react-redux'
-import { initializeApp } from '../actions/GeneralActions'
 import { fbLogin, googleLogin } from '../actions/AuthActions'
 
 class LoginScreen extends Component {
@@ -51,9 +50,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		initializeApp: () => {
-			dispatch(initializeApp());
-		},
 		fbLogin: () => {
 			dispatch(fbLogin());
 		},

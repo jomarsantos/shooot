@@ -3,6 +3,7 @@ import { AsyncStorage } from 'react-native'
 export const INITIALIZE_APP_LOGGED_IN_GENERAL_ACTION = 'INITIALIZE_APP_LOGGED_IN_GENERAL_ACTION';
 export const INITIALIZE_APP_NOT_LOGGED_IN_GENERAL_ACTION = 'INITIALIZE_APP_NOT_LOGGED_IN_GENERAL_ACTION';
 export const INITIALIZE_SOCKET_GENERAL_ACTION = 'INITIALIZE_SOCKET_GENERAL_ACTION';
+export const ACCEPT_CAMERA_PERMISSIONS_GENERAL_ACTION = 'ACCEPT_CAMERA_PERMISSIONS_GENERAL_ACTION';
 
 export function initializeApp() {
   return function (dispatch) {
@@ -35,4 +36,10 @@ export function initializeSocket() {
 			socket: socket,
 		});
 	}
+}
+
+export function acceptCameraPermissions() {
+  return {
+    type: ACCEPT_CAMERA_PERMISSIONS_GENERAL_ACTION
+  };
 }
