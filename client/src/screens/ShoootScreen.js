@@ -3,12 +3,14 @@ import ReactNative from 'react-native'
 const {
 	View,
 	Text,
-	TouchableHighlight
+	TouchableHighlight,
+	ImageEditor,
+	Dimensions
 } = ReactNative
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
 import { acceptCameraPermissions } from '../actions/GeneralActions'
-import { Camera, Permissions } from 'expo';
+import { Camera, Permissions, ImageManipulator } from 'expo';
 
 class ShoootScreen extends Component {
 	constructor(props) {
@@ -23,30 +25,38 @@ class ShoootScreen extends Component {
 		};
   };
 
+
 	async takePicture() {
 		if (this.camera) {
 			let photo = await this.camera.takePictureAsync({
 				base64: true,
 				quality: 0.5
 			});
+
+			photo = await ImageManipulator.manipulate(
+				photo.uri,
+				[
+					{
+						resize: {
+							width: 1080
+						}
+					},
+					{
+						crop: {
+							originX: 0,
+							originY: 420,
+							width: 1080,
+							height: 1080
+						}
+					}
+				],
+				{
+					compress: 1,
+					base64: true
+				}
+			);
 			console.log(photo);
-		} else {
-			console.log('nerp');
 		}
-		// console.log(this.camera);
-    // if (this.camera) {
-    //   this.camera.takePictureAsync().then(data => {
-    //     FileSystem.moveAsync({
-    //       from: data.uri,
-    //       to: `${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}.jpg`,
-    //     }).then(() => {
-    //       this.setState({
-    //         photoId: this.state.photoId + 1,
-    //       });
-    //       Vibration.vibrate();
-    //     });
-    //   });
-    // }
   };
 
 	render() {
@@ -54,29 +64,27 @@ class ShoootScreen extends Component {
 			<View></View>
 		);
 
+		// TODO: get ratio
+		const { height, width } = Dimensions.get('window');
+		let barHeight = (height - width) / 2;
+
 		if (this.props.hasCameraPermission) {
 			main = (
-				<View style={{ flex: 1 }}>
-					<Camera style={{ flex: 5 }}
+					<Camera style={{ flex: 1 }}
+						ratio='16:9'
 						ref={ref => { this.camera = ref; }}>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row',
-              }}>
-
-            </View>
-          </Camera>
-					<View style={{ flex: 1 }}>
+						<View style={{ height: barHeight, width: width, backgroundColor: 'black'}}>
+						</View>
+						<View style={{ height: width, width: width}}>
+						</View>
+						<View style={{ height: barHeight, width: width, backgroundColor: 'black'}}>
 							<TouchableHighlight
 								onPress={this.takePicture.bind(this)}
 							>
 								<Text>SHOOOT</Text>
 							</TouchableHighlight>
-
-					</View>
-				</View>
+						</View>
+          </Camera>
 			);
 		}
 
