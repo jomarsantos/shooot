@@ -27,7 +27,7 @@ class HostSessionScreen extends Component {
 		let participants = this.props.participants.map((participant, index) => {
 			return (
 				<View key={participant.id}>
-					<Text>{participant.username}</Text>
+					<Text>{participant.name}</Text>
 				</View>
 			);
 		});

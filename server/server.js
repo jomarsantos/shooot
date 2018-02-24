@@ -63,7 +63,7 @@ io.on('connection', function(socket){
 
 	socket.on('joinSession', function(message, callback) {
 		console.log('[PARTICIPANT] request to join a shooot');
-		participantHelpers.joinSession(callback);
+		participantHelpers.joinSession(message, callback, socket);
 	});
 
 	socket.on('disconnect', function(){

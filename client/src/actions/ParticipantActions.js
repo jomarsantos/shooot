@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 export const UPDATE_SESSION_CODE_INPUT_PARTICIPANT_ACTION = 'UPDATE_SESSION_CODE_INPUT_PARTICIPANT_ACTION';
 
-export function joinSession(socket, participant, sessionCodeInput) {
+export function joinSession(user, socket, sessionCodeInput) {
 	let joinSessionPromise = (reqSocket, reqArgs) => new Promise(resolve => {
 		// TODO: add safety for unavailable server/broken socket
 		reqSocket.emit('joinSession', reqArgs, function(response) {
@@ -12,7 +12,7 @@ export function joinSession(socket, participant, sessionCodeInput) {
 	return (dispatch, getState) => {
 		let args = {
 			code: sessionCodeInput,
-			participant: participant
+			participant: user,
 		}
 		return joinSessionPromise(socket, args).then((response) => {
 			console.log("RESPONSE FROM SERVER", response);

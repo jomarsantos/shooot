@@ -22,13 +22,7 @@ class JoinSessionScreen extends Component {
 	}
 
 	joinShoot() {
-		// TODO: remove stub / replace with user info
-		let participant = {
-			id: 12345,
-			username: 'cecilia.federizon'
-		}
-
-		this.props.joinSession(this.props.socket, participant, this.props.sessionCodeInput);
+		this.props.joinSession(this.props.user, this.props.socket, this.props.sessionCodeInput);
 
 		// TODO: show "requesting to join" loading screen and handle if user is denied
 	}
@@ -56,6 +50,7 @@ JoinSessionScreen.navigationOptions = {
 
 function mapStateToProps(state) {
 	return {
+		user: state.user.user,
 		socketStatus: state.general.socketStatus,
 		socket: state.general.socket,
 		session: state.general.session,
@@ -75,8 +70,8 @@ function mapDispatchToProps(dispatch) {
 		updateSessionCodeInput: (text) => {
 			dispatch(updateSessionCodeInput(text));
 		},
-		joinSession: (socket, participant, sessionCodeInput) => {
-			dispatch(joinSession(socket, participant, sessionCodeInput));
+		joinSession: (user, socket, sessionCodeInput) => {
+			dispatch(joinSession(user, socket, sessionCodeInput));
 		}
 	}
 }
