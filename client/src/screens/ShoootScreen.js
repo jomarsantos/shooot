@@ -33,6 +33,11 @@ class ShoootScreen extends Component {
 				quality: 0.5
 			});
 
+			const { height, width } = Dimensions.get('window');
+
+			let resizeHeight = (height / width) * 1080;
+			let originY = (resizeHeight - 1080) / 2;
+
 			photo = await ImageManipulator.manipulate(
 				photo.uri,
 				[
@@ -44,7 +49,7 @@ class ShoootScreen extends Component {
 					{
 						crop: {
 							originX: 0,
-							originY: 420,
+							originY: originY,
 							width: 1080,
 							height: 1080
 						}
@@ -64,14 +69,19 @@ class ShoootScreen extends Component {
 			<View></View>
 		);
 
-		// TODO: get ratio
 		const { height, width } = Dimensions.get('window');
 		let barHeight = (height - width) / 2;
+
+		let ratio = '';
+		if ((width/height) === (9/16)) {
+			ratio = '16:9';
+		}
+		// TODO: handle other ratios
 
 		if (this.props.hasCameraPermission) {
 			main = (
 					<Camera style={{ flex: 1 }}
-						ratio='16:9'
+						ratio={ratio}
 						ref={ref => { this.camera = ref; }}>
 						<View style={{ height: barHeight, width: width, backgroundColor: 'black'}}>
 						</View>
