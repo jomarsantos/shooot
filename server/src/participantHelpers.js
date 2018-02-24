@@ -1,7 +1,6 @@
-var codes = require('../codes.js');
 const Session = require('../models/Session');
 
-function createSession(callback) {
+function joinSession(callback) {
   let code = codes[Math.floor(Math.random() * Math.floor(codes.length))];
 
 	// Make sh
@@ -34,8 +33,27 @@ function createSession(callback) {
 			}
 			callback(response);		}
 	});
+
+
+	// // TODO: check if shooot code exists in DB and is active
+	// let shootExists = true;
+	//
+	// if (!shootExists) {
+	// 	var response = {
+	// 		success: false,
+	// 	}
+	// } else {
+	// 	// TODO: update session in DB with new participant
+	//
+	// 	var details = {
+	// 		type: 'addNewPossibleParticipant',
+	// 		participant: message.participant
+	// 	}
+	// 	socket.broadcast.emit(message.code, details);
+	// }
+	// callback(response);
 }
 
 module.exports = {
-  createSession: createSession
+  joinSession: joinSession
 };

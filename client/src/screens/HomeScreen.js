@@ -49,7 +49,6 @@ HomeScreen.navigationOptions = {
 
 function mapStateToProps(state) {
 	return {
-		user: state.user
 	};
 }
 

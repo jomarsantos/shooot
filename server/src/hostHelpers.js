@@ -1,7 +1,7 @@
 var codes = require('../codes.js');
 const Session = require('../models/Session');
 
-function createSession(callback) {
+function createSession(message, callback) {
   let code = codes[Math.floor(Math.random() * Math.floor(codes.length))];
 
 	// Make sh
@@ -10,7 +10,7 @@ function createSession(callback) {
 
 	var sessionDetail = {
 		code: code,
-		host: '5a87e1fdb7189d0e05b743e3', // TODO: get this from request
+		host: message.userId, // TODO: validate user id first
 		expiry: expiry
 	};
 	var session = new Session(sessionDetail);

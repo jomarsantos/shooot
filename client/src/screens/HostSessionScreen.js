@@ -19,7 +19,7 @@ class HostSessionScreen extends Component {
 	componentWillReceiveProps(nextProps) {
 		// Once socket is initialized, create a session
 		if (nextProps.socketStatus === 1 && nextProps.sessionCreated === 0) {
-			this.props.createSession(nextProps.socket);
+			this.props.createSession(this.props.user, nextProps.socket);
 		}
 	}
 
@@ -62,6 +62,7 @@ HostSessionScreen.navigationOptions = {
 
 function mapStateToProps(state) {
 	return {
+		user: state.user.user,
 		socketStatus: state.general.socketStatus,
 		socket: state.general.socket,
 		session: state.general.session,
@@ -78,8 +79,8 @@ function mapDispatchToProps(dispatch) {
 		initializeSocket: () => {
 			dispatch(initializeSocket());
 		},
-		createSession: (socket) => {
-			dispatch(createSession(socket));
+		createSession: (user, socket) => {
+			dispatch(createSession(user, socket));
 		}
 	}
 }

@@ -44,6 +44,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // Sockets
 //////////////////////////
 var hostHelpers = require('./src/hostHelpers');
+var participantHelpers = require('./src/participantHelpers');
 var http = require('http').Server(app);
 var io = require('socket.io')(http, {
   pingTimeout: 30000,
@@ -57,29 +58,12 @@ io.on('connection', function(socket){
 
 	socket.on('createSession', function(message, callback) {
 		console.log('[HOST] request to create a shooot');
-		hostHelpers.createSession(callback);
+		hostHelpers.createSession(message, callback);
 	});
 
 	socket.on('joinSession', function(message, callback) {
 		console.log('[PARTICIPANT] request to join a shooot');
-		// hostHelpers.joinSession(callback);
-		// TODO: check if shooot code exists in DB and is active
-		let shootExists = true;
-
-		if (!shootExists) {
-			var response = {
-				success: false,
-			}
-		} else {
-			// TODO: update session in DB with new participant
-
-			var details = {
-				type: 'addNewPossibleParticipant',
-				participant: message.participant
-			}
-			socket.broadcast.emit(message.code, details);
-		}
-		callback(response);
+		participantHelpers.joinSession(callback);
 	});
 
 	socket.on('disconnect', function(){
