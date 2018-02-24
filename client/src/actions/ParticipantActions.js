@@ -1,10 +1,10 @@
 import io from 'socket.io-client';
 export const UPDATE_SESSION_CODE_INPUT_PARTICIPANT_ACTION = 'UPDATE_SESSION_CODE_INPUT_PARTICIPANT_ACTION';
 
-export function joinShooot(socket, participant, sessionCodeInput) {
-	let joinShoootPromise = (reqSocket, reqArgs) => new Promise(resolve => {
+export function joinSession(socket, participant, sessionCodeInput) {
+	let joinSessionPromise = (reqSocket, reqArgs) => new Promise(resolve => {
 		// TODO: add safety for unavailable server/broken socket
-		reqSocket.emit('joinShooot', reqArgs, function(response) {
+		reqSocket.emit('joinSession', reqArgs, function(response) {
 			resolve(response);
 		})
 	});
@@ -14,7 +14,7 @@ export function joinShooot(socket, participant, sessionCodeInput) {
 			code: sessionCodeInput,
 			participant: participant
 		}
-		return joinShoootPromise(socket, args).then((response) => {
+		return joinSessionPromise(socket, args).then((response) => {
 			console.log("RESPONSE FROM SERVER", response);
 
 			// TODO: validate response / show error if unable to join

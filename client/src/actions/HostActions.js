@@ -1,17 +1,17 @@
 import io from 'socket.io-client';
-export const SHOOOT_CREATED_HOST_ACTION = 'SHOOOT_CREATED_HOST_ACTION';
+export const SESSION_CREATED_HOST_ACTION = 'SESSION_CREATED_HOST_ACTION';
 export const NEW_POSSIBLE_PARTICIPANT_HOST_ACTION = 'NEW_POSSIBLE_PARTICIPANT_HOST_ACTION';
 
-export function createShooot(socket) {
-	let createShoootPromise = (reqSocket, reqArgs) => new Promise(resolve => {
+export function createSession(socket) {
+	let createSessionPromise = (reqSocket, reqArgs) => new Promise(resolve => {
 		// TODO: add safety for unavailable server/broken socket
-		reqSocket.emit('createShooot', reqArgs, function(response) {
+		reqSocket.emit('createSession', reqArgs, function(response) {
 			resolve(response);
 		})
 	});
 
 	return (dispatch, getState) => {
-		return createShoootPromise(socket, {}).then((response) => {
+		return createSessionPromise(socket, {}).then((response) => {
 			console.log("RESPONSE FROM SERVER", response);
 
 			// TODO: validate response
@@ -26,14 +26,14 @@ export function createShooot(socket) {
 				}
 			});
 
-			dispatch(shoootCreated(response));
+			dispatch(sessionCreated(response));
 		});
 	}
 }
 
-export function shoootCreated(response) {
+export function sessionCreated(response) {
 	return {
-		type: SHOOOT_CREATED_HOST_ACTION,
+		type: SESSION_CREATED_HOST_ACTION,
 		session: response.session
 	}
 }

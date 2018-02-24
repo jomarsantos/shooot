@@ -55,14 +55,14 @@ var sessions = [];
 io.on('connection', function(socket){
   console.log('a user connected');
 
-	socket.on('createShooot', function(message, callback) {
+	socket.on('createSession', function(message, callback) {
 		console.log('[HOST] request to create a shooot');
 		hostHelpers.createSession(callback);
 	});
 
-	socket.on('joinShooot', function(message, callback) {
+	socket.on('joinSession', function(message, callback) {
 		console.log('[PARTICIPANT] request to join a shooot');
-
+		// hostHelpers.joinSession(callback);
 		// TODO: check if shooot code exists in DB and is active
 		let shootExists = true;
 

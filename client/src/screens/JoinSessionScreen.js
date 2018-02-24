@@ -8,9 +8,9 @@ const {
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
 import { initializeSocket } from '../actions/GeneralActions'
-import { joinShooot, updateSessionCodeInput } from '../actions/ParticipantActions'
+import { joinSession, updateSessionCodeInput } from '../actions/ParticipantActions'
 
-class JoinShoootScreen extends Component {
+class JoinSessionScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.props.initializeSocket();
@@ -28,7 +28,7 @@ class JoinShoootScreen extends Component {
 			username: 'cecilia.federizon'
 		}
 
-		this.props.joinShooot(this.props.socket, participant, this.props.sessionCodeInput);
+		this.props.joinSession(this.props.socket, participant, this.props.sessionCodeInput);
 
 		// TODO: show "requesting to join" loading screen and handle if user is denied
 	}
@@ -49,7 +49,7 @@ class JoinShoootScreen extends Component {
 	}
 }
 
-JoinShoootScreen.navigationOptions = {
+JoinSessionScreen.navigationOptions = {
   title: 'Join Shooot',
 	header: null,
 };
@@ -75,10 +75,10 @@ function mapDispatchToProps(dispatch) {
 		updateSessionCodeInput: (text) => {
 			dispatch(updateSessionCodeInput(text));
 		},
-		joinShooot: (socket, participant, sessionCodeInput) => {
-			dispatch(joinShooot(socket, participant, sessionCodeInput));
+		joinSession: (socket, participant, sessionCodeInput) => {
+			dispatch(joinSession(socket, participant, sessionCodeInput));
 		}
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(JoinShoootScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(JoinSessionScreen);

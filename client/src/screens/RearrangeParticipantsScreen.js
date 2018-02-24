@@ -8,7 +8,7 @@ const {
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
 
-class HostShoootScreen extends Component {
+class HostSessionScreen extends Component {
 	render() {
 
 		return (
@@ -24,7 +24,7 @@ class HostShoootScreen extends Component {
 	}
 }
 
-HostShoootScreen.navigationOptions = {
+HostSessionScreen.navigationOptions = {
   title: 'Rearrange Participants',
 	header: null,
 };
@@ -47,4 +47,4 @@ function mapDispatchToProps(dispatch) {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HostShoootScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(HostSessionScreen);

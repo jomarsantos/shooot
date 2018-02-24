@@ -8,9 +8,9 @@ const {
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
 import { initializeSocket } from '../actions/GeneralActions'
-import { createShooot } from '../actions/HostActions'
+import { createSession } from '../actions/HostActions'
 
-class HostShoootScreen extends Component {
+class HostSessionScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.props.initializeSocket();
@@ -19,7 +19,7 @@ class HostShoootScreen extends Component {
 	componentWillReceiveProps(nextProps) {
 		// Once socket is initialized, create a session
 		if (nextProps.socketStatus === 1 && nextProps.sessionCreated === 0) {
-			this.props.createShooot(nextProps.socket);
+			this.props.createSession(nextProps.socket);
 		}
 	}
 
@@ -55,7 +55,7 @@ class HostShoootScreen extends Component {
 	}
 }
 
-HostShoootScreen.navigationOptions = {
+HostSessionScreen.navigationOptions = {
   title: 'Host Shooot',
 	header: null,
 };
@@ -78,10 +78,10 @@ function mapDispatchToProps(dispatch) {
 		initializeSocket: () => {
 			dispatch(initializeSocket());
 		},
-		createShooot: (socket) => {
-			dispatch(createShooot(socket));
+		createSession: (socket) => {
+			dispatch(createSession(socket));
 		}
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HostShoootScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(HostSessionScreen);

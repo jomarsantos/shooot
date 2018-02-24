@@ -22,12 +22,12 @@ class HomeScreen extends Component {
 
 				<View>
 						<TouchableHighlight
-							onPress={() => {this.props.navigate('JoinShooot')}}
+							onPress={() => {this.props.navigate('JoinSession')}}
 						>
 							<Text>JOIN</Text>
 						</TouchableHighlight>
 						<TouchableHighlight
-							onPress={() => {this.props.navigate('HostShooot')}}
+							onPress={() => {this.props.navigate('HostSession')}}
 						>
 							<Text>HOST</Text>
 						</TouchableHighlight>
