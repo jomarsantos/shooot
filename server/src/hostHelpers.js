@@ -17,6 +17,7 @@ function createSession(message, callback) {
 	session.save(function (err) {
 		if (err) {
 			if (err.type == 'validation') {
+				console.log('[INFO] Server tried assigning a code already in use.');
 				// Shooot with code currently exists already, try again
 				createSession(callback);
 			} else {
@@ -27,6 +28,7 @@ function createSession(message, callback) {
 				callback(response);
 			}
 		} else {
+			console.log('[INFO] A user created a session.');
 			// Succesfully created session
 			var response = {
 				success: true,

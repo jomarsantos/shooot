@@ -10,12 +10,14 @@ function joinSession(message, callback, socket) {
 	}, function(err, session) {
 		var response = {};
 	  if (err) {
+			console.log('[ERROR] Could not find session with code: '+message.code);
 			var response = {
 				success: false,
 				error: err,
 				msg: "Unable to find session. Please contact an admin. (Error 0)"
 			}
 	  } else if (session) {
+			console.log('[INFO] Request to join session with code: '+message.code);
 			var response = {
 				success: true,
 				msg: "Waiting for host to accept request."
@@ -28,6 +30,7 @@ function joinSession(message, callback, socket) {
 			}
 			socket.broadcast.emit(message.code, details);
 	  } else {
+			console.log('[INFO] Request to join session with invalid code: '+message.code);
 			var response = {
 				success: false,
 				msg: "Could not find a valid session with that code."

@@ -54,20 +54,18 @@ var io = require('socket.io')(http, {
 var sessions = [];
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+  console.log('[INFO] A user connected.');
 
 	socket.on('createSession', function(message, callback) {
-		console.log('[HOST] request to create a shooot');
 		hostHelpers.createSession(message, callback);
 	});
 
 	socket.on('joinSession', function(message, callback) {
-		console.log('[PARTICIPANT] request to join a shooot');
 		participantHelpers.joinSession(message, callback, socket);
 	});
 
 	socket.on('disconnect', function(){
-		console.log('user disconnected');
+		console.log('[INFO] A user disconnected.');
 	});
 });
 

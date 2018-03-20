@@ -8,7 +8,7 @@ const {
 import { connect } from 'react-redux'
 import { navigate } from '../actions/NavigationActions'
 import { initializeSocket } from '../actions/GeneralActions'
-import { createSession } from '../actions/HostActions'
+import { createSession, declineParticipant } from '../actions/HostActions'
 
 class HostSessionScreen extends Component {
 	constructor(props) {
@@ -24,12 +24,22 @@ class HostSessionScreen extends Component {
 	}
 
 	render() {
+		console.log(this.props.participants);
 		let participants = this.props.participants.map((participant, index) => {
-			return (
-				<View key={participant.id}>
-					<Text>{participant.name}</Text>
-				</View>
-			);
+			if (!participant.hasOwnProperty('status')) {
+				return (
+					<View key={participant.id}>
+						<View>
+							<Text>{participant.name}</Text>
+						</View>
+						<TouchableHighlight
+							onPress={() => {this.props.declineParticipant(participant.id)}}
+						>
+							<Text>DELETE</Text>
+						</TouchableHighlight>
+					</View>
+				);
+			}
 		});
 
 		return (
@@ -81,6 +91,9 @@ function mapDispatchToProps(dispatch) {
 		},
 		createSession: (user, socket) => {
 			dispatch(createSession(user, socket));
+		},
+		declineParticipant: (participantId) => {
+			dispatch(declineParticipant(participantId));
 		}
 	}
 }
