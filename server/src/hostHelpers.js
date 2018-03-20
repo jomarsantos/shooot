@@ -1,7 +1,7 @@
 var codes = require('../codes.js');
 const Session = require('../models/Session');
 
-function createSession(message, callback) {
+function createSession(socket, message, callback) {
   let code = codes[Math.floor(Math.random() * Math.floor(codes.length))];
 
 	// Make sh
@@ -28,13 +28,36 @@ function createSession(message, callback) {
 				callback(response);
 			}
 		} else {
-			console.log('[INFO] A user created a session.');
+      socket.on(code, function(message, callback) {
+        // Switch statement depending on type of request
+        switch (message.type) {
+          // HOST: tell participants to start session
+          case 'startSession':
+            var details = {
+              success: true,
+              type: 'startSession',
+              participants: message.participants
+            }
+            socket.broadcast.emit(code, details);
+            var response = {
+      				success: true,
+      				msg: "Informed participants to start session."
+      			}
+            callback(response);
+        }
+    		console.log(message);
+    	});
+      
+      // TODO: close unused/expired sockets
+      
+			console.log('[INFO] A user created a session with code: '+code);
 			// Succesfully created session
 			var response = {
 				success: true,
 				session: session
 			}
-			callback(response);		}
+			callback(response);	
+    }
 	});
 }
 

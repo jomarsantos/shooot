@@ -57,7 +57,7 @@ io.on('connection', function(socket){
   console.log('[INFO] A user connected.');
 
 	socket.on('createSession', function(message, callback) {
-		hostHelpers.createSession(message, callback);
+		hostHelpers.createSession(socket, message, callback);
 	});
 
 	socket.on('joinSession', function(message, callback) {

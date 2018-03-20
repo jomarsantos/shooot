@@ -24,7 +24,6 @@ class HostSessionScreen extends Component {
 	}
 
 	render() {
-		console.log(this.props.participants);
 		let participants = this.props.participants.map((participant, index) => {
 			if (!participant.hasOwnProperty('status')) {
 				return (

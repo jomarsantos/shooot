@@ -6,16 +6,26 @@ const {
 	TouchableHighlight
 } = ReactNative
 import { connect } from 'react-redux'
-import { navigate } from '../actions/NavigationActions'
+import { startSession } from '../actions/HostActions'
 
 class HostSessionScreen extends Component {
 	render() {
+		let participants = this.props.participants.map((participant, index) => {
+			if (!participant.hasOwnProperty('status')) {
+				return (
+					<View key={participant.id}>
+							<Text>{participant.name}</Text>
+					</View>
+				);
+			}
+		});
 
 		return (
 			<View>
 				<Text>Rearrange Participants</Text>
+				{participants}
 				<TouchableHighlight
-					onPress={() => {this.props.navigate('Shooot')}}
+					onPress={() => this.props.startSession(this.props.session, this.props.participants, this.props.socket)}
 				>
 					<Text>Next</Text>
 				</TouchableHighlight>
@@ -41,8 +51,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		navigate: (routeName) => {
-			dispatch(navigate(routeName));
+		startSession: (session, participants, socket) => {
+			dispatch(startSession(session, participants, socket));
 		}
 	}
 }

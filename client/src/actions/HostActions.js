@@ -2,6 +2,7 @@ import io from 'socket.io-client';
 export const SESSION_CREATED_HOST_ACTION = 'SESSION_CREATED_HOST_ACTION';
 export const NEW_POSSIBLE_PARTICIPANT_HOST_ACTION = 'NEW_POSSIBLE_PARTICIPANT_HOST_ACTION';
 export const UPDATE_PARTICIPANTS_HOST_ACTION = 'UPDATE_PARTICIPANTS_HOST_ACTION';
+export const START_SESSION_HOST_ACTION = 'START_SESSION_HOST_ACTION';
 
 export function createSession(user, socket) {
 	let createSessionPromise = (reqSocket, reqArgs) => new Promise(resolve => {
@@ -20,7 +21,7 @@ export function createSession(user, socket) {
 			socket.on(response.session.code, (message) => {
 				switch(message.type) {
 					case 'addNewPossibleParticipant':
-						// console.log("[INFO] Host receiving new participant request - request from server", message.participant);
+						console.log("[INFO] Host receiving new participant request - request from server", message.participant);
 						dispatch({
 							type: NEW_POSSIBLE_PARTICIPANT_HOST_ACTION,
 							participant: message.participant
@@ -65,3 +66,23 @@ export function updateParticipants(participants) {
 		participants: participants
 	}
 }
+
+export function startSession(session, participants, socket) {
+	let startSessionPromise = (reqSocket, sessionCode, reqArgs) => new Promise(resolve => {
+		// TODO: add safety for unavailable server/broken socket
+		reqSocket.emit(sessionCode, reqArgs, function(response) {
+			resolve(response);
+		})
+	});
+	
+	return (dispatch, getState) => {
+		return startSessionPromise(socket, session.code, {type: 'startSession', participants: participants}).then((response) => {
+			console.log("[INFO] Host starting session - response from server", response);
+			
+			dispatch({
+				type: START_SESSION_HOST_ACTION,
+			});
+		});
+	}
+}
+
