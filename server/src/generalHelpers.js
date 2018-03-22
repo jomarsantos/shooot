@@ -1,5 +1,5 @@
 function trigger(io, socket, message, callback) {
-  console.log('[INFO] Shooot triggered');
+  console.log('[INFO] Shooot triggered: '+message.code);
   // TODO: store the shooot details in DB
 
   var details = {
