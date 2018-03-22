@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 export const UPDATE_SESSION_CODE_INPUT_PARTICIPANT_ACTION = 'UPDATE_SESSION_CODE_INPUT_PARTICIPANT_ACTION';
 export const START_SESSION_PARTICIPANT_ACTION = 'START_SESSION_PARTICIPANT_ACTION';
+export const SET_SESSION_PARTICIPANT_ACTION = 'SET_SESSION_PARTICIPANT_ACTION';
 
 export function joinSession(user, socket, sessionCodeInput) {
 	let joinSessionPromise = (reqSocket, reqArgs) => new Promise(resolve => {
@@ -17,7 +18,14 @@ export function joinSession(user, socket, sessionCodeInput) {
 		}
 		return joinSessionPromise(socket, args).then((response) => {
 			console.log("RESPONSE FROM SERVER", response);
-
+			
+			// TODO: validate response / show error if unable to join
+			
+			dispatch({
+				type: SET_SESSION_PARTICIPANT_ACTION,
+				session: response.session
+			});
+			
 			socket.on(sessionCodeInput, (message) => {
 				switch(message.type) {
 					case 'startSession':
@@ -28,7 +36,6 @@ export function joinSession(user, socket, sessionCodeInput) {
 				}
 			});
 			
-			// TODO: validate response / show error if unable to join
 		});
 	}
 }

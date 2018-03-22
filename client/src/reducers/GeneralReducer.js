@@ -4,6 +4,7 @@ import {
 	INITIALIZE_SOCKET_GENERAL_ACTION
 } from '../actions/GeneralActions';
 import { SESSION_CREATED_HOST_ACTION } from '../actions/HostActions';
+import { SET_SESSION_PARTICIPANT_ACTION } from '../actions/ParticipantActions';
 
 const INITIAL_STATE = {
 	appInitialized: false,
@@ -32,6 +33,11 @@ export default function(state = INITIAL_STATE, action) {
 				socket: action.socket
 			};
 		case SESSION_CREATED_HOST_ACTION:
+			return {
+				...state,
+				session: action.session
+			};
+		case SET_SESSION_PARTICIPANT_ACTION:
 			return {
 				...state,
 				session: action.session
