@@ -29,8 +29,7 @@ class ShoootScreen extends Component {
 		});
   };
 
-	triggerShooot(session, user, socket) {
-		console.log('triggerer:', user);
+	triggerShooot() {
 	  let triggerShoootPromise = (reqSocket, reqArgs) => new Promise(resolve => {
 			// TODO: add safety for unavailable server/broken socket
 			reqSocket.emit('trigger', reqArgs, function(response) {
@@ -40,55 +39,74 @@ class ShoootScreen extends Component {
 
 
 		let args = {
-			user: user,
-      code: session.code
+			user: this.props.user,
+      code: this.props.session.code
 		}
-		return triggerShoootPromise(socket, args).then((response) => {
+		return triggerShoootPromise(this.props.socket, args).then((response) => {
 			// console.log("RESPONSE FROM SERVER", response);
 			// this.takePicture();
 			
 			// TODO: validate response / show error if unable to join
 			
 		});
-	}
+	};
+	
+	sendShoootImage(photo) {
+	  let sendShoootImagePromise = (reqSocket, reqArgs) => new Promise(resolve => {
+			// TODO: add safety for unavailable server/broken socket
+			reqSocket.emit('shoootImage', reqArgs, function(response) {
+				resolve(response);
+			})
+		});
+
+
+		let args = {
+			photo: photo,
+      code: this.props.session.code
+		}
+		return sendShoootImagePromise(this.props.socket, args).then((response) => {
+
+		});
+	};
 
 	async takePicture() {
-		console.log(this.props.user);
-		// if (this.camera) {
-		// 	let photo = await this.camera.takePictureAsync({
-		// 		base64: true,
-		// 		quality: 0.5
-		// 	});
-		// 
-		// 	const { height, width } = Dimensions.get('window');
-		// 
-		// 	let resizeHeight = (height / width) * 1080;
-		// 	let originY = (resizeHeight - 1080) / 2;
-		// 
-		// 	photo = await ImageManipulator.manipulate(
-		// 		photo.uri,
-		// 		[
-		// 			{
-		// 				resize: {
-		// 					width: 1080
-		// 				}
-		// 			},
-		// 			{
-		// 				crop: {
-		// 					originX: 0,
-		// 					originY: originY,
-		// 					width: 1080,
-		// 					height: 1080
-		// 				}
-		// 			}
-		// 		],
-		// 		{
-		// 			compress: 1,
-		// 			base64: true
-		// 		}
-		// 	);
-		// 	console.log(photo);
-		// }
+		// console.log(this.props.user);
+		if (this.camera) {
+			let photo = await this.camera.takePictureAsync({
+				base64: true,
+				quality: 0.5
+			});
+		
+			const { height, width } = Dimensions.get('window');
+		
+			let resizeHeight = (height / width) * 1080;
+			let originY = (resizeHeight - 1080) / 2;
+		
+			photo = await ImageManipulator.manipulate(
+				photo.uri,
+				[
+					{
+						resize: {
+							width: 1080
+						}
+					},
+					{
+						crop: {
+							originX: 0,
+							originY: originY,
+							width: 1080,
+							height: 1080
+						}
+					}
+				],
+				{
+					compress: 1,
+					base64: true
+				}
+			);
+			
+			this.sendShoootImage(photo);
+		}
   };
 
 	render() {
@@ -116,7 +134,7 @@ class ShoootScreen extends Component {
 						</View>
 						<View style={{ height: barHeight, width: width, backgroundColor: 'black'}}>
 							<TouchableHighlight
-								onPress={() => this.triggerShooot(this.props.session, this.props.user, this.props.socket)}
+								onPress={() => this.triggerShooot()}
 								style={{backgroundColor: 'white'}}
 							>
 								<Text>SHOOOT</Text>
@@ -142,7 +160,7 @@ function mapStateToProps(state) {
 		user: state.user.user,
 		hasCameraPermission: state.user.hasCameraPermission,
 		socket: state.general.socket,
-		session: state.general.session,
+		session: state.general.session
 	};
 }
 
@@ -153,9 +171,6 @@ function mapDispatchToProps(dispatch) {
 		},
 		acceptCameraPermissions: () => {
 			dispatch(acceptCameraPermissions());
-		},
-		triggerShooot: (session, user, socket) => {
-			dispatch(triggerShooot(session, user, socket));
 		}
 	}
 }

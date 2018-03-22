@@ -79,6 +79,10 @@ io.on('connection', function(socket){
 		generalHelpers.trigger(io, socket, message, callback);
 	});
 	
+	socket.on('shoootImage', function(message, callback) {
+		generalHelpers.shoootImage(io, socket, message, callback);
+	});
+	
 	socket.on('disconnect', function(){
 		console.log('[INFO] A user disconnected.');
 	});
