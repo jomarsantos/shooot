@@ -14,19 +14,16 @@ export function createSession(user, socket) {
 
 	return (dispatch, getState) => {
 		return createSessionPromise(socket, {userId: user.id}).then((response) => {
-			console.log("[INFO] Host creating session - response from server", response);
+			console.log("[INFO] Host created session - response from server", response);
 
 			// TODO: validate response
 
-			socket.on(response.session.code, (message) => {
-				switch(message.type) {
-					case 'addNewPossibleParticipant':
-						console.log("[INFO] Host receiving new participant request - request from server", message.participant);
-						dispatch({
-							type: NEW_POSSIBLE_PARTICIPANT_HOST_ACTION,
-							participant: message.participant
-						});
-				}
+			socket.on('addNewPossibleParticipant', (message) => {
+				console.log("[INFO] Host receiving new participant request - request from server", message.participant);
+				dispatch({
+					type: NEW_POSSIBLE_PARTICIPANT_HOST_ACTION,
+					participant: message.participant
+				});
 			});
 
 			dispatch(sessionCreated(response));
@@ -68,15 +65,20 @@ export function updateParticipants(participants) {
 }
 
 export function startSession(session, participants, socket) {
-	let startSessionPromise = (reqSocket, sessionCode, reqArgs) => new Promise(resolve => {
+	let startSessionPromise = (reqSocket, reqArgs) => new Promise(resolve => {
 		// TODO: add safety for unavailable server/broken socket
-		reqSocket.emit(sessionCode, reqArgs, function(response) {
+		reqSocket.emit('startSession', reqArgs, function(response) {
 			resolve(response);
 		})
 	});
 	
+	let args = {
+		code: session.code,
+		participants: participants
+	}
+	
 	return (dispatch, getState) => {
-		return startSessionPromise(socket, session.code, {type: 'startSession', participants: participants}).then((response) => {
+		return startSessionPromise(socket, args).then((response) => {
 			console.log("[INFO] Host starting session - response from server", response);
 			
 			dispatch({

@@ -17,7 +17,7 @@ export function joinSession(user, socket, sessionCodeInput) {
 			participant: user,
 		}
 		return joinSessionPromise(socket, args).then((response) => {
-			console.log("RESPONSE FROM SERVER", response);
+			console.log("[INFO] Participant joined session - response from server", response);
 			
 			// TODO: validate response / show error if unable to join
 			
@@ -26,14 +26,14 @@ export function joinSession(user, socket, sessionCodeInput) {
 				session: response.session
 			});
 			
-			socket.on(sessionCodeInput, (message) => {
-				switch(message.type) {
-					case 'startSession':
-						console.log("[INFO] Participant told to start session by host");
-						dispatch({
-							type: START_SESSION_PARTICIPANT_ACTION,
-						});
-				}
+			socket.on('startSession', (message) => {
+				console.log("[INFO] Participant told to start session by host");
+				
+				// TODO: dispatch message.participants to know ordering
+				
+				dispatch({
+					type: START_SESSION_PARTICIPANT_ACTION,
+				});
 			});
 			
 		});

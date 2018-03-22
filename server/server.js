@@ -43,6 +43,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 //////////////////////////
 // Sockets
 //////////////////////////
+var generalHelpers = require('./src/generalHelpers');
 var hostHelpers = require('./src/hostHelpers');
 var participantHelpers = require('./src/participantHelpers');
 var http = require('http').Server(app);
@@ -56,14 +57,28 @@ var sessions = [];
 io.on('connection', function(socket){
   console.log('[INFO] A user connected.');
 
+	/////// HOST ///////
+	
 	socket.on('createSession', function(message, callback) {
-		hostHelpers.createSession(socket, message, callback);
+		hostHelpers.createSession(io, socket, message, callback);
 	});
+
+	socket.on('startSession', function(message, callback) {
+		hostHelpers.startSession(io, socket, message, callback);
+	});
+	
+	/////// PARTICIPANT ///////
 
 	socket.on('joinSession', function(message, callback) {
-		participantHelpers.joinSession(message, callback, socket);
+		participantHelpers.joinSession(io, socket, message, callback);
 	});
 
+	/////// GENERAL ///////
+
+	socket.on('trigger', function(message, callback) {
+		generalHelpers.trigger(io, socket, message, callback);
+	});
+	
 	socket.on('disconnect', function(){
 		console.log('[INFO] A user disconnected.');
 	});

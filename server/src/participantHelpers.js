@@ -1,6 +1,6 @@
 const Session = require('../models/Session');
 
-function joinSession(message, callback, socket) {
+function joinSession(io, socket, message, callback) {
 	let currentTime = new Date();
 	Session.findOne({
 		code: message.code,
@@ -20,15 +20,15 @@ function joinSession(message, callback, socket) {
 			console.log('[INFO] Request to join session with code: '+message.code);
 			var response = {
 				success: true,
-				msg: "Waiting for host to accept request."
+				msg: "Waiting for host to accept request.",
+				session: session
 			}
-
 			// Send message to host that someone is requesting to join
+			socket.join(message.code);
 			var details = {
-				type: 'addNewPossibleParticipant',
 				participant: message.participant
 			}
-			socket.broadcast.emit(message.code, details);
+			socket.to(message.code).emit('addNewPossibleParticipant', details);
 	  } else {
 			console.log('[INFO] Request to join session with invalid code: '+message.code);
 			var response = {

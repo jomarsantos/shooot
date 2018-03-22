@@ -1,10 +1,8 @@
 var codes = require('../codes.js');
 const Session = require('../models/Session');
 
-function createSession(socket, message, callback) {
+function createSession(io, socket, message, callback) {
   let code = codes[Math.floor(Math.random() * Math.floor(codes.length))];
-
-	// Make sh
 	let expiry = new Date();
 	expiry.setTime(expiry.getTime() + (1*60*60*1000));
 
@@ -14,44 +12,26 @@ function createSession(socket, message, callback) {
 		expiry: expiry
 	};
 	var session = new Session(sessionDetail);
+  
 	session.save(function (err) {
 		if (err) {
 			if (err.type == 'validation') {
 				console.log('[INFO] Server tried assigning a code already in use.');
-				// Shooot with code currently exists already, try again
+        
+				// Try again
 				createSession(callback);
 			} else {
 				console.log('[ERROR] Error saving to database', err);
+        
 				var response = {
 					success: false,
 				}
 				callback(response);
 			}
-		} else {
-      socket.on(code, function(message, callback) {
-        // Switch statement depending on type of request
-        switch (message.type) {
-          // HOST: tell participants to start session
-          case 'startSession':
-            var details = {
-              success: true,
-              type: 'startSession',
-              participants: message.participants
-            }
-            socket.broadcast.emit(code, details);
-            var response = {
-      				success: true,
-      				msg: "Informed participants to start session."
-      			}
-            callback(response);
-        }
-    		console.log(message);
-    	});
-      
-      // TODO: close unused/expired sockets
-      
-			console.log('[INFO] A user created a session with code: '+code);
-			// Succesfully created session
+		} else {      
+      console.log('[INFO] A user created a session with code: '+code);
+
+      socket.join(code);
 			var response = {
 				success: true,
 				session: session
@@ -61,6 +41,24 @@ function createSession(socket, message, callback) {
 	});
 }
 
+function startSession(io, socket, message, callback) {
+  console.log('[INFO] Host informing everyone to start session');
+  // TODO: store the session details in DB
+
+  var details = {
+    success: true,
+    participants: message.participants
+  };
+  io.in(message.code).emit('startSession', details);
+  
+  var response = {
+    success: true,
+    msg: "Informed participants to start session."
+  };
+  callback(response);
+}
+
 module.exports = {
-  createSession: createSession
+  createSession: createSession,
+  startSession: startSession
 };
