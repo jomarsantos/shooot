@@ -61,6 +61,7 @@ class ShoootScreen extends Component {
 
 
 		let args = {
+			user: this.props.user.id,
 			photo: photo,
       code: this.props.session.code
 		}

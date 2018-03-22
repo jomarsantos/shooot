@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 function trigger(io, socket, message, callback) {
   console.log('[INFO] Shooot triggered: '+message.code);
   // TODO: store the shooot details in DB
@@ -16,6 +18,8 @@ function trigger(io, socket, message, callback) {
 
 function shoootImage(io, socket, message, callback) {
   console.log('[INFO] Shooot image received: '+message.photo.base64);
+  
+  // fs.writeFile(message.user+'.jpg', message.photo.base64, {encoding: 'base64'}, function(err){});
   
   // TODO: store the shooot image in DB and process
 
