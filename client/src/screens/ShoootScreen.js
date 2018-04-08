@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ReactNative from 'react-native'
 const {
+	StyleSheet,
+	StatusBar,
 	View,
 	Text,
 	TouchableHighlight,
@@ -112,7 +114,7 @@ class ShoootScreen extends Component {
 
 	render() {
 		let main = (
-			<View></View>
+			<View style={styles.main}></View>
 		);
 
 		const { height, width } = Dimensions.get('window');
@@ -126,22 +128,25 @@ class ShoootScreen extends Component {
 
 		if (this.props.hasCameraPermission) {
 			main = (
-					<Camera style={{ flex: 1 }}
+				<View style={styles.main}>
+
+					<Camera style={styles.camera}
 						ratio={ratio}
 						ref={ref => { this.camera = ref; }}>
 						<View style={{ height: barHeight, width: width, backgroundColor: 'black'}}>
 						</View>
 						<View style={{ height: width, width: width}}>
 						</View>
-						<View style={{ height: barHeight, width: width, backgroundColor: 'black'}}>
+						<View style={{ height: barHeight, width: width, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}>
 							<TouchableHighlight
 								onPress={() => this.triggerShooot()}
-								style={{backgroundColor: 'white'}}
+								 style={styles.shoootButton}
 							>
-								<Text>SHOOOT</Text>
+								<Text></Text>
 							</TouchableHighlight>
 						</View>
           </Camera>
+				</View>
 			);
 		}
 
@@ -150,6 +155,27 @@ class ShoootScreen extends Component {
 		)
 	}
 }
+
+const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+		backgroundColor: '#000000',
+  },
+	text: {
+		color: '#EDB106'
+	},
+	camera: {
+		flex: 1
+	},
+	shoootButton: {
+		height: 80,
+		width: 80,
+		borderRadius: 40,
+		backgroundColor:'#EDB106',
+	}
+});
 
 ShoootScreen.navigationOptions = {
   title: 'Shooot',
